@@ -44,4 +44,4 @@
       loop:
         - { dest: "inventory", content: '{{ inv_file }}'  }
         - { dest: './ansible.cfg', content: '{{ config_file }}' }
-        - { dest: './.gitignore', content: .vault_password.txt" }
+        - { dest: './.gitignore', content: '{{ gitignore }}' }
