@@ -7,6 +7,7 @@
     config_file: "[defaults]\nhost_key_checking = False\nroles_path = roles\ninventory = inventory\nretry_files_enabled = False\n#vault_password_file = ./.vault_password.txt"
     inv_file: "#[all:children]\n#group1\n#group2\n\n#[group1]\n#host1 ansible_host=192.168.121.111\n#host2 ansible_host=192.168.121.112\n\n#[group2]\n#host1 ansible_host=192.168.121.113\n#host2 ansible_host=192.168.121.114\n\n#[all:vars]\n#ansible_user=ansible\n#ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key\n#ansible_python_interpreter=python"
     gitignore: ".vault_password.txt\n.DS_Store\n"
+    main_pb: "---\n- hosts: localhost\n#  gather_facts: false\n#  connection: local\n  vars:\n  tasks:\n    - name: blah\n      debug:\n        msg=blah\n  roles:\n    - insert_role_here"
   tasks:
     - name: Create Directory Structure
       file:
@@ -34,7 +35,7 @@
         - "roles/requirements.yml"
         - "templates/template.j2"
         - "./inventory"
-        - "./site.yml"
+#        - "./site.yml"
         - "./.vault_password.txt"
 
     - name: Create boilerplated files
@@ -45,3 +46,4 @@
         - { dest: "inventory", content: '{{ inv_file }}'  }
         - { dest: './ansible.cfg', content: '{{ config_file }}' }
         - { dest: './.gitignore', content: '{{ gitignore }}' }
+        - { dest: 'main.pb.yml', content: '{{ main_pb }}' }
