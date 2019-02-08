@@ -38,11 +38,9 @@
 
     - name: Create boilerplated files
       copy:
-#        dest: "./ansible.cfg"
-#        content: '{{ config_file }}'
         dest: "{{ item.dest }}"
         content: "{{ item.content }}"
       loop:
         - { dest: "inventory", content: '{{ inv_file }}'  }
         - { dest: './ansible.cfg', content: '{{ config_file }}' }
-        - { dest: './.gitignore', content: './.vault_password.txt' }
+        - { dest: './.gitignore', content: '.vault_password.txt' }
