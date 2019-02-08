@@ -1,0 +1,48 @@
+---
+- name: BUILD ENVIRONEMNT
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    config_file: "[defaults]\nhost_key_checking = False\nroles_path = roles\ninventory = inventory\nretry_files_enabled = False\n#vault_password_file = ./.vault_password.txt"
+    inv_file: "#[all:children]\n#group1\n#group2\n\n#[group1]\n#host1 ansible_host=192.168.121.111\n#host2 ansible_host=192.168.121.112\n\n#[group2]\n#host1 ansible_host=192.168.121.113\n#host2 ansible_host=192.168.121.114\n\n#[all:vars]\n#ansible_user=ansible\n#ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key\n#ansible_python_interpreter=python"
+  tasks:
+    - name: Create Directory Structure
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+      loop:
+        - "group_vars/all"
+        - "group_vars/group1"
+        - "group_vars/group2"
+        - "host_vars"
+        - "roles"
+        - "templates"
+
+    - name: Create File Structure
+      file:
+        path: "{{ item }}"
+        mode: 0755
+        state: touch
+      loop:
+        - "group_vars/all/main.yml"
+        - "group_vars/group1/main.yml"
+        - "group_vars/group2/main.yml"
+        - "host_vars/main.yml"
+        - "roles/requirements.yml"
+        - "templates/template.j2"
+        - "./inventory"
+        - "./site.yml"
+        - "./.vault_password.txt"
+
+    - name: Create boilerplated files
+      copy:
+#        dest: "./ansible.cfg"
+#        content: '{{ config_file }}'
+        dest: "{{ item.dest }}"
+        content: "{{ item.content }}"
+      loop:
+        - { dest: "inventory", content: '{{ inv_file }}'  }
+        - { dest: './ansible.cfg', content: '{{ config_file }}' }
+        - { dest: './.gitignore', content: './.vault_password.txt' }

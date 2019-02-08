@@ -1,0 +1,33 @@
+---
+- name: BUILD ROLE STRUCTURE
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Create Directory Structure
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+      loop:
+        - "defaults"
+        - "handlers"
+        - "meta"
+        - "tasks"
+        - "tests"
+        - "templates"
+        - "vars"
+
+    - name: Create File Structure
+      file:
+        path: "{{ item }}"
+        mode: 0755
+        state: touch
+      loop:
+        - "defaults/main.yml"
+        - "handlers/main.yml"
+        - "meta/main.yml"
+        - "tasks/main.yml"
+        - "tests/main.yml"
+        - "templates/main.yml"
+        - "vars/main.yml"
